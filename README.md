@@ -27,7 +27,7 @@ So offload your photos and videos into mediadump, let the machine do the tedious
 
 ### [FAQ](#faq)
 
-### [License](#lic)
+### [Credits & License](#cred)
 
 
 ## Features <a name="feature"></a>
@@ -191,8 +191,10 @@ A: Just set the SOURCE_DIR, IMAGE_TARGET_DIR, and VIDEO_TARGET_DIR to the paths.
 
 A: All standard image and video file types recognized by their MIME type and by the Pillow/ffprobe tools.
 
+## Credits <a name="cred"></a>
+Thanks to my excessively organized wife for insisting on our family photos being sorted and thus inspiring me to make this tool. We're both happy now that it gets done and I don't have to do it manually. 
 
-## License <a name="lic"></a>
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
