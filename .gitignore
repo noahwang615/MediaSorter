@@ -27,6 +27,7 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
+mediasorter_test.py
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
