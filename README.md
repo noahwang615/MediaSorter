@@ -3,6 +3,7 @@
 This script automatically organizes your photos and videos into year/month folders by parsing creation dates from their metadata. Perfect for quickly offloading and tidying up your digital memories.
 
 I would recommend setting this up as a cronjob or scheduled task (feel free to test it out manually before automating the job), and I recommend keeping the name "mediadump" for simplicity's sake.
+
 The script performs a move function instead of copy, so your mediadump folder will be emptied once the operation is complete. As a scheduled job, it won't do anything if the mediadump folder is empty (no harm in having it run every day). 
 So offload your photos and videos into mediadump, let the machine do the tedious work, and get on with your life.
 

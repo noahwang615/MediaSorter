@@ -12,7 +12,13 @@ import logging
 import sys
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, format='%(levelname)s:%(message)s')
+os.makedirs("logs", exist_ok=True)
+
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)s: %(message)s",
+        handlers=[logging.FileHandler("log/mediasorter.log", mode='w'), logging.StreamHandler()]
+    )
 
 def check_dependencies() -> None:
     """
@@ -31,14 +37,14 @@ def check_dependencies() -> None:
         sys.exit(1)
 
 # Source and Target directories | Users: change these paths for your setup
-SOURCE_DIR = "[path_to_media_sort]/media_sort"
+SOURCE_DIR = "[path_to_MediaSorter]/mediadump"
 IMAGE_TARGET_DIR = "path/to/your/photo_directory"
 VIDEO_TARGET_DIR = "path/to/your/video_directory"
 
 """ 
 
 Here's an example how my path works. I store all my media in a Synology instance, so my Media_AutoSort is inside Synology looking for those directories
-SOURCE_DIR = "/volume1/homes/media_sort"
+SOURCE_DIR = "/volume1/homes/mediadump"
 IMAGE_TARGET_DIR = "/volume1/homes/images"
 VIDEO_TARGET_DIR = "/volume1/homes/video" 
 
