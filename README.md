@@ -67,10 +67,11 @@ Open a terminal, then run:
 
 ```bash
 bash ./install_scripts/install.sh
-On Windows:
 ```
 
-**Open Command Prompt and run**
+**On Windows:**
+
+Open Command Prompt and run
 
 ```text
 .\install_scripts\install.bat
@@ -82,11 +83,11 @@ Upgrade pip and install Python dependencies from requirements.txt.
 
 Check for ffprobe (part of FFmpeg) and prompt to install it if necessary.
 
-After successful installation, you can run the script as usual:
+After successful installation, you will be able to run this operation.
 
-```bash
-python media_sort.py
-```
+*If you need help with installing Python or ffmpeg* [Install Python](https://www.python.org/downloads/), [Install FFMpeg](https://ffmpeg.org/download.html)
+
+*If you know how to work with cmd/terminal, or would rather work that cmd/terminals...just google it, Google AI summary does a pretty good job giving you the answers*
 
 ## Configuration <a name="conf"></a>
 
