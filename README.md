@@ -9,25 +9,25 @@ So as a scheduled job, it wouldn't do anything if the mediadump folder is empty 
 # Table of Contents
 ### [Features](#feature)
 
-### [Requirements](req)
+### [Requirements](#req)
 
-### [Installation](ins)
+### [Installation](#ins)
 
-### [Configuration](conf)
+### [Configuration](#conf)
 
-### [Usage](usage)
+### [Usage](#usage)
 
-### [Bonus: set it up for automation](bonus)
+### [Bonus: set it up for automation](#bonus)
 
-### [Examples](exp)
+### [Examples](#exp)
 
-### [Logging](log)
+### [Logging](#log)
 
-### [Contributing](cont)
+### [Contributing](#cont)
 
-### [FAQ](faq)
+### [FAQ](#faq)
 
-### [License](lic)
+### [License](#lic)
 
 
 ## Features <a name="feature"></a>
