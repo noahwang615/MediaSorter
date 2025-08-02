@@ -1,10 +1,10 @@
 # MediaSorter
 
-This script automatically organize your photos and videos into year/month folders by parsing creation dates from their metadata. Perfect for quickly offloading and tidying up your digital memories.
+This script automatically organizes your photos and videos into year/month folders by parsing creation dates from their metadata. Perfect for quickly offloading and tidying up your digital memories.
 
-I would recommend setting this up as cronjob or scheduled task (feel free to test it out manually before automating the job), and I would recommend keeping the name "mediadump" for simplicity sake.
-The script does perform a move function instead of copy, so your mediadump folder will be emptied once the operation is complete
-So as a scheduled job, it wouldn't do anything if the mediadump folder is empty anyway. So just make it easy for yourself, dump all your stuff into mediadump, and let the machine do the tedious work in seconds and get on with your lives.
+I would recommend setting this up as a cronjob or scheduled task (feel free to test it out manually before automating the job), and I recommend keeping the name "mediadump" for simplicity's sake.
+The script performs a move function instead of copy, so your mediadump folder will be emptied once the operation is complete. As a scheduled job, it won't do anything if the mediadump folder is empty (no harm in having it run every day). 
+So offload your photos and videos into mediadump, let the machine do the tedious work, and get on with your life.
 
 # Table of Contents
 ### [Features](#feature)
@@ -122,7 +122,7 @@ python media_sort.py
 ### For cron:
 - Open your terminal
 - crontab -e
-- 0 * * * * /usr/bin/python3 /path/to/your/media_sort.py
+- ``` text 0 * * * * /usr/bin/python3 /path/to/your/media_sort.py ```
 
 note: that cron is setup for every hour, feel free to change the frequency. If you don't know how to set up cron job, [Click here to learn how to schedule](https://crontab.guru/)
 
@@ -131,14 +131,14 @@ note: that cron is setup for every hour, feel free to change the frequency. If y
 - In the Action pane, click Create Basic Tasks
 - Fill in the names and stuff, I would recommend choosing "Run whether user is logged in or not"
 - Click Trigger and click new, do whatever interval you want
-- Go to the Action tab, Action = Start a Program, Program/Script = "C:\Users\<YourUsername>\AppData\Local\Programs\Python\Python<VersionNumber>\python.exe", Add arguments = "path/to/media_sorter.py"
+- Go to the Action tab, Action = Start a Program, Program/Script = ``` "C:\Users\<YourUsername>\AppData\Local\Programs\Python\Python<VersionNumber>\python.exe" ```, Add arguments = "path/to/media_sorter.py"
 
-*note: If your python is not located in the usual spot and you don't remember where you installed it, run where python in your command line*
+*note: If your python is not located in the usual spot and you don't remember where you installed it, run ```where python``` in your command line*
 
 ### For Synology DSM (what I use): 
 - Open Control Panel > Task Scheduler > Create Scheduled Task
 - Input the name, and modify the script's schedule
-- Enter python3 /path/to/media_sorter.py under User-Defined script
+- Enter ```python3 /path/to/media_sorter.py``` under User-Defined script
 
 
 ## Examples <a name="exp"></a>
@@ -179,12 +179,15 @@ Do your thing and make it better if you want
 
 ## FAQ <a name="faq"></a>
 **Q: Why does the script skip some files?**
+
 A: Check the log output for warnings. Skipped files are usually unsupported types or missing date information in their metadata. 
 
 **Q: How do I use this with network drives or cloud folders?**
+
 A: Just set the SOURCE_DIR, IMAGE_TARGET_DIR, and VIDEO_TARGET_DIR to the paths. I personally just have the folder in my network drive so the path can be as simple as it can be, and I can set a cron job in the network drive to have it go on its own.
 
 **Q: What file types are supported?**
+
 A: All standard image and video file types recognized by their MIME type and by the Pillow/ffprobe tools.
 
 
