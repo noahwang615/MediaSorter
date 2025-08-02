@@ -15,7 +15,7 @@ So as a scheduled job, it wouldn't do anything if the mediadump folder is empty 
 
 ### [Configuration](#conf)
 
-### [Usage](#usage)
+### [Usage](#use)
 
 ### [Bonus: set it up for automation](#bonus)
 
@@ -99,7 +99,7 @@ VIDEO_TARGET_DIR = "path/to/your/videos"
 ```
 You can use absolute or relative paths. The script will create folders if they don’t exist.
 
-## Usage: <a name="usage"></a>
+## Usage: <a name="use"></a>
 
 **Usage Recommendation:** I would just set up a cronjob, scheduled tasks, or whatever automated job to just run this script periodically (mine runs every hour in my remote server). Nothing will happen if there's nothing in mediadump folder anyway. More hands-off, less manual steps. 
 
