@@ -114,7 +114,7 @@ You can use absolute or relative paths. The script will create folders if they d
 * If you opted for manual trigger, you can simply run the script from your terminal:
 
 ```bash
-python media_sort.py
+python mediasorter.py
 ```
 
 ## Bonus: set it up for automation <a name="bonus"></a>
@@ -124,7 +124,7 @@ python media_sort.py
 ### For cron:
 - Open your terminal
 - crontab -e
-- ``` text 0 * * * * /usr/bin/python3 /path/to/your/media_sort.py ```
+- ``` text 0 * * * * /usr/bin/python3 /path/to/your/mediasorter.py ```
 
 note: this cron example is setup to run the job for every hour, feel free to change the frequency. If you don't know how to set up cron job, [Click here to learn how to schedule](https://crontab.guru/)
 
@@ -140,7 +140,7 @@ note: this cron example is setup to run the job for every hour, feel free to cha
 ### For Synology DSM (what I use): 
 - Open Control Panel > Task Scheduler > Create Scheduled Task
 - Input the name, and modify the script's schedule
-- Enter ```python3 /path/to/media_sorter.py``` under User-Defined script
+- Enter ```python3 /path/to/mediasorter.py``` under User-Defined script
 
 
 ## Examples <a name="exp"></a>
