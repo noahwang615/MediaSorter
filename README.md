@@ -58,7 +58,7 @@ Install Python 3.8+ on the machine that is going to be running the script (local
 git clone https://github.com/noahwang615/MediaSorter.git
 cd MediaSorter
 ```
-Or download the project as zip
+Or download the project as zip by clicking on the **Code** dropdown and click **Download Zip**
 
 ### 2. Run the provided install script for your platform to set up dependencies:
 
@@ -92,7 +92,7 @@ After successful installation, you will be able to run this operation.
 
 ## Configuration <a name="conf"></a>
 
-Edit the media_sorter.py script and update the directories at the top:
+Edit the media_sorter.py script and update the directories at the top of the script: (you can open and edit the `media_sorter.py` script by right-click and open with notepad or texteditor)
 
 ```python
 SOURCE_DIR = "path/to/your/mediadump"
@@ -126,7 +126,7 @@ python media_sort.py
 - crontab -e
 - ``` text 0 * * * * /usr/bin/python3 /path/to/your/media_sort.py ```
 
-note: that cron is setup for every hour, feel free to change the frequency. If you don't know how to set up cron job, [Click here to learn how to schedule](https://crontab.guru/)
+note: this cron example is setup to run the job for every hour, feel free to change the frequency. If you don't know how to set up cron job, [Click here to learn how to schedule](https://crontab.guru/)
 
 ### For Windows Task Scheduler: 
 - Launch Task Scheduler
