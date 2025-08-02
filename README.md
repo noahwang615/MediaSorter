@@ -192,4 +192,6 @@ A: All standard image and video file types recognized by their MIME type and by 
 
 This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
 
-Happy Sorting!
+---
+
+## Happy Sorting!
