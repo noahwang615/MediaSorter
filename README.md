@@ -70,7 +70,7 @@ Or download the project as zip by clicking on the **Code** dropdown and click **
 Open a terminal, then run:
 
 ```bash
-bash ./install_scripts/install.sh
+./install_scripts/install.sh
 ```
 
 **On Windows:**
