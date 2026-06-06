@@ -53,7 +53,22 @@ So offload your photos and videos into mediadump, let the machine do the tedious
 
 If you don’t have these already, the install script handles it for you.
 
+## Installing on a NAS or Remote Host
+
+If you plan to run MediaSorter on a NAS, home server, or another remote machine, you should install it on that remote system, not just on your local computer.
+
+In practice, that usually means:
+
+- Connect to the remote host over SSH.
+- Clone this repository on that host.
+- Run the Python setup and install script from that host.
+- Configure your scheduled task or cron job there as well.
+- This README does not cover SSH setup in detail, but if you want MediaSorter to run automatically on a remote machine, make sure you are connected to that machine before following the installation steps below.
+
+
 ## Installation <a name="ins"></a>
+
+*Note: If you are installing this on a NAS or remote host, SSH into that system first and run the following commands there.*
 
 ### 1. Download the project:
 
@@ -70,7 +85,7 @@ Or download the project as zip by clicking on the **Code** dropdown and click **
 Open a terminal, then run:
 
 ```bash
-bash ./install_scripts/install.sh
+./install_scripts/install.sh
 ```
 
 **On Windows:**
@@ -98,14 +113,29 @@ After successful installation, you will be able to run this operation.
 Edit the mediasorter.py script and update the directories at the top of the script: (you can open and edit the `mediasorter.py` script by right-click and open with notepad or texteditor)
 
 ```python
-SOURCE_DIR = "(path to MediaSorter folder)/mediadump"
-IMAGE_TARGET_DIR = "path/to/your/photos"
-VIDEO_TARGET_DIR = "path/to/your/videos"
+########## USER EDIT PATHS BELOW - CHANGE THESE FOR YOUR SETUP ##########
+
+# SOURCE_DIR = os.path.join(PROJECT_BASE, "mediadump")      <-- Uncomment if using default path (mediadump folder in project root)
+# SOURCE_DIR = "path/to/your/mediadump_directory"           <-- Uncomment if using custom path
+
+IMAGE_TARGET_DIR = "path/to/your/image_target_directory"  # <-- Change this to your desired image target path
+VIDEO_TARGET_DIR = "path/to/your/video_target_directory"  # <-- Change this to your desired video target path
+
+"""
+Here's an example how my path works. I store all my media in a Synology instance, so my Media_AutoSort is inside Synology looking for those directories
+SOURCE_DIR = "/volume1/homes/mediadump"
+IMAGE_TARGET_DIR = "/volume1/homes/images"
+VIDEO_TARGET_DIR = "/volume1/homes/video" 
+"""
+
+########## USER EDIT PATHS BELOW - CHANGE THESE FOR YOUR SETUP ##########
 ```
-Please replace these placeholder path with your actual path
+
+You can select which SOURCE_DIR option you wish to use. Simply just uncomment (remove the #) the option you want.
+
 *You can use absolute or relative paths. The script will create folders if they don’t exist.*
 
-### Here's my example
+### Here's an example
 
 ```python
 SOURCE_DIR = "C:/noahwang/MediaSorter/mediadump" # path in my computer's local drive
