@@ -1,6 +1,9 @@
 @echo off
 REM install.bat - setup script for MediaSort project on Windows
 
+SET SCRIPT_DIR=%~dp0
+SET PROJECT_BASE=%SCRIPT_DIR%..
+
 echo Checking for Python installation...
 
 python --version >nul 2>&1
@@ -18,7 +21,7 @@ echo Upgrading pip...
 python -m pip install --upgrade pip
 
 echo Installing required Python packages from requirements.txt...
-pip install -r requirements.txt
+pip install -r "%PROJECT_BASE%\requirements.txt"
 
 echo Checking for ffprobe (FFmpeg tool) installation...
 
