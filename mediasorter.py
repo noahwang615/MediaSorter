@@ -14,11 +14,11 @@ import sys
 # Set up logging
 os.makedirs("logs", exist_ok=True)
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s %(levelname)s: %(message)s",
-        handlers=[logging.FileHandler("log/mediasorter.log", mode='w'), logging.StreamHandler()]
-    )
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s: %(message)s",
+    handlers=[logging.FileHandler("log/mediasorter.log", mode='w'), logging.StreamHandler()]
+)
 
 def check_dependencies() -> None:
     """
