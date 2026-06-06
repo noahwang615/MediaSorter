@@ -28,6 +28,11 @@ nosetests.xml
 coverage.xml
 *.cover
 mediasorter_test.py
+mediadump/*
+logs/*
+test/test_logs/*
+test/image_dest/*
+test/video_dest/*
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
