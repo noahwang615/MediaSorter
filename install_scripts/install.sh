@@ -7,9 +7,12 @@ then
     exit
 fi
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_BASE="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 # Install dependencies
 python3 -m pip install --upgrade pip
-pip3 install -r requirements.txt
+pip3 install -r "$PROJECT_BASE/install_scripts/requirements.txt"
 
 # Check for ffprobe
 if ! command -v ffprobe &> /dev/null
