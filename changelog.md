@@ -1,5 +1,15 @@
 # Changelog for MediaSorter
 
+## [v1.5.0] - 2026-06-04
+- Added `Pillow-heif` dependency to requirements.txt
+- Updated the install scripts to resolve project base path
+- Added test dir for local testing before deploying to working environment
+- Improved the main script logic
+    - Refined HEIC parsing
+    - Added dependency checks for `pillow-heif` and `ffprobe`
+    - Improved logging, including log file output from the script
+    - Clarified comments around function purpose and user-editable paths.
+
 ## [v1.0] - 2025-08-01
 - Released on Github
 - Basic media sorting by year/month folders implemented
