@@ -179,8 +179,10 @@ def get_media_date(file_path: str) -> str:
 def process_file(file_path: str) -> str:
     if is_photo(file_path):
         target_dir = IMAGE_TARGET_DIR
+        subfolder = "raw" # For photos, we want to put them in a "raw" subfolder
     elif is_video(file_path):
         target_dir = VIDEO_TARGET_DIR
+        subfolder = "" # For videos, we can put them directly in the year/month folders
     else:
         logging.info("Skipping unsupported file type: %s", os.path.basename(file_path))
         return "skipped"
@@ -191,7 +193,7 @@ def process_file(file_path: str) -> str:
         return "skipped"
 
     year, month = date.split("-")[:2]
-    final_folder = os.path.join(target_dir, year, month)
+    final_folder = os.path.join(target_dir, year, month, subfolder)
     os.makedirs(final_folder, exist_ok=True)
 
     new_filename = get_unique_filename(final_folder, os.path.basename(file_path))

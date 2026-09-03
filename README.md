@@ -8,7 +8,7 @@ The script performs a move function instead of copy, so your mediadump folder wi
 So offload your photos and videos into mediadump, let the machine do the tedious work, and get on with your life.
 
 # Table of Contents
-### [What’s it do](#feature)
+### [What it does](#feature)
 
 ### [What you need](#req)
 
@@ -31,7 +31,7 @@ So offload your photos and videos into mediadump, let the machine do the tedious
 ### [Credits & License](#cred)
 
 
-## What’s it do?
+## What it does?
 
 - Moves photos and videos into folders by year and month (e.g., /photos/2024/08/)
 
@@ -45,7 +45,7 @@ So offload your photos and videos into mediadump, let the machine do the tedious
 
 ## What you need <a name="req"></a>
 
-- Python 3.8 or newer installed on your computer
+- Python 3.11 or newer installed on your computer or remote machine
 
 - Pillow Python package (for photo metadata)
 
@@ -96,21 +96,21 @@ Open Command Prompt and run
 .\install_scripts\install.bat
 ```
 
-The install script will check for Python 3 installation and prompt if missing.
+**The install script will check for Python 3 installation and prompt if missing.**
 
-Upgrade pip and install Python dependencies from requirements.txt.
+- Upgrade pip and install Python dependencies from requirements.txt.
 
-Check for ffprobe (part of FFmpeg) and prompt to install it if necessary.
+- Check for ffprobe (part of FFmpeg) and prompt to install it if necessary.
 
-After successful installation, you will be able to run this operation.
+- After successful installation, you will be able to run this operation.
 
-*If you need help with installing Python or ffmpeg* [Install Python](https://www.python.org/downloads/), [Install FFMpeg](https://ffmpeg.org/download.html)
+    - *If you need help with installing Python or ffmpeg* [Install Python](https://www.python.org/downloads/), [Install FFMpeg](https://ffmpeg.org/download.html)
 
-*If you know how to work with cmd/terminal, or would rather work that cmd/terminals...just google it, Google AI summary does a pretty good job giving you the answers*
+    - *If you know how to work with cmd/terminal, or would rather work that cmd/terminals...just google it, Google AI summary does a pretty good job giving you the answers*
 
 ## How to configure paths <a name="conf"></a>
 
-Edit the mediasorter.py script and update the directories at the top of the script: (you can open and edit the `mediasorter.py` script by right-click and open with notepad or texteditor)
+Edit the `mediasorter.py` script and update the directories at the top of the script: (you can open and edit the `mediasorter.py` script by right-click and open with notepad or texteditor)
 
 ```python
 ########## USER EDIT PATHS BELOW - CHANGE THESE FOR YOUR SETUP ##########
@@ -131,7 +131,7 @@ VIDEO_TARGET_DIR = "/volume1/homes/video"
 ########## USER EDIT PATHS BELOW - CHANGE THESE FOR YOUR SETUP ##########
 ```
 
-You can select which SOURCE_DIR option you wish to use. Simply just uncomment (remove the #) the option you want.
+You can select which `SOURCE_DIR` option you wish to use. Simply just uncomment (remove the #) the option you want.
 
 *You can use absolute or relative paths. The script will create folders if they don’t exist.*
 
@@ -200,7 +200,7 @@ Save and enjoy automatic sorting
 ### For Synology DSM (what I use): 
 - Open Control Panel > Task Scheduler > Create Scheduled Task
 - Input the name, and modify the script's schedule
-- Enter ```python3 /path/to/mediasorter.py``` under User-Defined script
+- Enter ```/usr/bin/python /path/to/mediasorter.py``` under User-Defined script
 
 
 ## Examples <a name="exp"></a>

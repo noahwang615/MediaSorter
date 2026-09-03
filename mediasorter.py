@@ -18,11 +18,10 @@ register_heif_opener()
 
 # =======  CONFIGURATION START =======
 
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_BASE = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
+PROJECT_BASE = os.path.dirname(os.path.abspath(__file__))
 
-LOG_DIR = os.path.join(SCRIPT_DIR, "test_logs")
-LOG_FILE = os.path.join(LOG_DIR, "mediasorter_test.log")
+LOG_DIR = os.path.join(PROJECT_BASE, "logs")
+LOG_FILE = os.path.join(LOG_DIR, "mediasorter.log")
 DATE_FALLBACK = "0000-00-00"
 
 ########## USER EDIT PATHS BELOW - CHANGE THESE FOR YOUR SETUP ##########
@@ -51,7 +50,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s: %(message)s",
     handlers=[
-        logging.FileHandler(os.path.join(LOG_DIR, "mediasorter_test.log")),
+        logging.FileHandler(LOG_FILE),
         logging.StreamHandler()
     ]
 )
@@ -178,8 +177,10 @@ def get_media_date(file_path: str) -> str:
 def process_file(file_path: str) -> str:
     if is_photo(file_path):
         target_dir = IMAGE_TARGET_DIR
+        subfolder = "" # Add subfolder logic here if needed (e.g., if you would like to sort by raw vs. proof)
     elif is_video(file_path):
         target_dir = VIDEO_TARGET_DIR
+        subfolder = "" # Add subfolder logic here if needed (e.g., if you would like to sort by raw vs. proof)
     else:
         logging.info("Skipping unsupported file type: %s", os.path.basename(file_path))
         return "skipped"
@@ -190,7 +191,7 @@ def process_file(file_path: str) -> str:
         return "skipped"
 
     year, month = date.split("-")[:2]
-    final_folder = os.path.join(target_dir, year, month)
+    final_folder = os.path.join(target_dir, year, month, subfolder)
     os.makedirs(final_folder, exist_ok=True)
 
     new_filename = get_unique_filename(final_folder, os.path.basename(file_path))
