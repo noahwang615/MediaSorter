@@ -1,8 +1,8 @@
 #!/bin/sh
-# Repeatedly runs mediasorter.py, sleeping RUN_INTERVAL_SECONDS between passes.
+# Repeatedly runs mediasorter.py, sleeping PROOF_INTERVAL_SECONDS between passes.
 set -e
 
-INTERVAL="${RUN_INTERVAL_SECONDS:-86400}"
+INTERVAL="${PROOF_INTERVAL_SECONDS:-86400}"
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 
 while true; do
