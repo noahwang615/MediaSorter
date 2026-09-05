@@ -31,6 +31,7 @@ data/mediadump/*
 data/photos/*
 data/videos/*
 logs/*
+.pytest_cache/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
