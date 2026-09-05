@@ -8,6 +8,7 @@ import json
 import logging
 import sys
 from datetime import datetime
+from dotenv import load_dotenv
 
 from pillow_heif import register_heif_opener
 from PIL import Image
@@ -16,33 +17,30 @@ from PIL.ExifTags import TAGS
 # Register HEIF support for Pillow (HEIC/HEIF decode)
 register_heif_opener()
 
-# =======  CONFIGURATION START =======
-
-PROJECT_BASE = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_BASE = os.path.dirname(SCRIPT_DIR)
+load_dotenv(os.path.join(PROJECT_BASE, ".env"))  # local runs pick up .env; Docker env vars still win if already set
 
 LOG_DIR = os.path.join(PROJECT_BASE, "logs")
 LOG_FILE = os.path.join(LOG_DIR, "mediasorter.log")
 DATE_FALLBACK = "0000-00-00"
 
-########## USER EDIT PATHS BELOW - CHANGE THESE FOR YOUR SETUP ##########
+# Default setting if just using path inside the project folder (mediadump/photos/videos)
+SOURCE_DIR_DEFAULT = os.path.join(PROJECT_BASE, "data", "mediadump")
+IMAGE_TARGET_DIR_DEFAULT = os.path.join(PROJECT_BASE, "data", "photos")
+VIDEO_TARGET_DIR_DEFAULT = os.path.join(PROJECT_BASE, "data", "videos")
 
-# SOURCE_DIR = os.path.join(PROJECT_BASE, "mediadump")      <-- Uncomment if using default path (mediadump folder in project root)
-# SOURCE_DIR = "path/to/your/mediadump_directory"           <-- Uncomment if using custom path
+# Main path settings. Overwriten by .env file or Docker env vars. Otherwise uses the defaults above.
+SOURCE_DIR = os.environ.get("MEDIA_SRC", SOURCE_DIR_DEFAULT)
+IMAGE_TARGET_DIR = os.environ.get("PHOTO_DEST", IMAGE_TARGET_DIR_DEFAULT)
+VIDEO_TARGET_DIR = os.environ.get("VIDEO_DEST", VIDEO_TARGET_DIR_DEFAULT)
 
-IMAGE_TARGET_DIR = "path/to/your/image_target_directory"  # <-- Change this to your desired image target path
-VIDEO_TARGET_DIR = "path/to/your/video_target_directory"  # <-- Change this to your desired video target path
-
-"""
-Here's an example how my path works. I store all my media in a Synology instance, so my Media_AutoSort is inside Synology looking for those directories
-SOURCE_DIR = "/volume1/homes/mediadump"
-IMAGE_TARGET_DIR = "/volume1/homes/images"
-VIDEO_TARGET_DIR = "/volume1/homes/video" 
-"""
-
-########## USER EDIT PATHS BELOW - CHANGE THESE FOR YOUR SETUP ##########
-
-# =======  CONFIGURATION END =======
-
+if not os.path.isabs(SOURCE_DIR):
+    SOURCE_DIR = os.path.join(PROJECT_BASE, SOURCE_DIR)
+if not os.path.isabs(IMAGE_TARGET_DIR):
+    IMAGE_TARGET_DIR = os.path.join(PROJECT_BASE, IMAGE_TARGET_DIR)
+if not os.path.isabs(VIDEO_TARGET_DIR):
+    VIDEO_TARGET_DIR = os.path.join(PROJECT_BASE, VIDEO_TARGET_DIR)
 
 # Logging setup
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -177,10 +175,10 @@ def get_media_date(file_path: str) -> str:
 def process_file(file_path: str) -> str:
     if is_photo(file_path):
         target_dir = IMAGE_TARGET_DIR
-        subfolder = "" # Add subfolder logic here if needed (e.g., if you would like to sort by raw vs. proof)
+        subfolder = "raw" 
     elif is_video(file_path):
         target_dir = VIDEO_TARGET_DIR
-        subfolder = "" # Add subfolder logic here if needed (e.g., if you would like to sort by raw vs. proof)
+        subfolder = "" # Add subfolder logic here if needed
     else:
         logging.info("Skipping unsupported file type: %s", os.path.basename(file_path))
         return "skipped"

@@ -20,6 +20,8 @@ So offload your photos and videos into mediadump, let the machine do the tedious
 
 ### [Automate](#bonus)
 
+### [Docker Deployment](#docker)
+
 ### [Examples](#exp)
 
 ### [Logging](#log)
@@ -85,7 +87,7 @@ Or download the project as zip by clicking on the **Code** dropdown and click **
 Open a terminal, then run:
 
 ```bash
-./install_scripts/install.sh
+./install.sh
 ```
 
 **On Windows:**
@@ -93,7 +95,7 @@ Open a terminal, then run:
 Open Command Prompt and run
 
 ```text
-.\install_scripts\install.bat
+.\install.bat
 ```
 
 **The install script will check for Python 3 installation and prompt if missing.**
@@ -110,37 +112,40 @@ Open Command Prompt and run
 
 ## How to configure paths <a name="conf"></a>
 
-Edit the `mediasorter.py` script and update the directories at the top of the script: (you can open and edit the `mediasorter.py` script by right-click and open with notepad or texteditor)
+Edit the `mediasorter.py` script and update the default directories at the top of the script: (you can open and edit the `mediasorter.py` script by right-click and open with notepad or texteditor)
 
 ```python
 ########## USER EDIT PATHS BELOW - CHANGE THESE FOR YOUR SETUP ##########
 
-# SOURCE_DIR = os.path.join(PROJECT_BASE, "mediadump")      <-- Uncomment if using default path (mediadump folder in project root)
-# SOURCE_DIR = "path/to/your/mediadump_directory"           <-- Uncomment if using custom path
-
-IMAGE_TARGET_DIR = "path/to/your/image_target_directory"  # <-- Change this to your desired image target path
-VIDEO_TARGET_DIR = "path/to/your/video_target_directory"  # <-- Change this to your desired video target path
+# SOURCE_DIR_DEFAULT = os.path.join(PROJECT_BASE, "mediadump")  <-- Uncomment if using default path (mediadump folder in project root)
+SOURCE_DIR_DEFAULT = "path/to/your/mediadump_directory"          # <-- Change this to your source path
+IMAGE_TARGET_DIR_DEFAULT = "path/to/your/image_target_directory"  # <-- Change this to your desired image target path
+VIDEO_TARGET_DIR_DEFAULT = "path/to/your/video_target_directory"  # <-- Change this to your desired video target path
 
 """
 Here's an example how my path works. I store all my media in a Synology instance, so my Media_AutoSort is inside Synology looking for those directories
-SOURCE_DIR = "/volume1/homes/mediadump"
-IMAGE_TARGET_DIR = "/volume1/homes/images"
-VIDEO_TARGET_DIR = "/volume1/homes/video" 
+SOURCE_DIR_DEFAULT = "/volume1/homes/mediadump"
+IMAGE_TARGET_DIR_DEFAULT = "/volume1/homes/images"
+VIDEO_TARGET_DIR_DEFAULT = "/volume1/homes/video"
 """
+
+SOURCE_DIR = os.environ.get("MEDIA_SRC", SOURCE_DIR_DEFAULT)
+IMAGE_TARGET_DIR = os.environ.get("PHOTO_DEST", IMAGE_TARGET_DIR_DEFAULT)
+VIDEO_TARGET_DIR = os.environ.get("VIDEO_DEST", VIDEO_TARGET_DIR_DEFAULT)
 
 ########## USER EDIT PATHS BELOW - CHANGE THESE FOR YOUR SETUP ##########
 ```
 
-You can select which `SOURCE_DIR` option you wish to use. Simply just uncomment (remove the #) the option you want.
+The `DEFAULT` values are used when running the script directly (no Docker). If the `MEDIA_SRC`, `PHOTO_DEST`, or `VIDEO_DEST` environment variables are set (as they are inside the Docker container — see [Docker Deployment](#docker)), they override the defaults.
 
 *You can use absolute or relative paths. The script will create folders if they don’t exist.*
 
 ### Here's an example
 
 ```python
-SOURCE_DIR = "C:/noahwang/MediaSorter/mediadump" # path in my computer's local drive
-IMAGE_TARGET_DIR = "/volume1/homes/images" # path to my photo destination in network folder
-VIDEO_TARGET_DIR = "/volume1/homes/videos" # path to my video destination in network folder
+SOURCE_DIR_DEFAULT = "C:/noahwang/MediaSorter/mediadump" # path in my computer's local drive
+IMAGE_TARGET_DIR_DEFAULT = "/volume1/homes/images" # path to my photo destination in network folder
+VIDEO_TARGET_DIR_DEFAULT = "/volume1/homes/videos" # path to my video destination in network folder
 ```
 
 ## How to run it: <a name="use"></a>
@@ -154,7 +159,7 @@ VIDEO_TARGET_DIR = "/volume1/homes/videos" # path to my video destination in net
 3. Run the script:
 
 ```bash
-python mediasorter.py
+python scripts/mediasorter.py
 ```
 
 ## Automate to forget about it <a name="bonus"></a>
@@ -196,6 +201,63 @@ In “Add arguments,” put the full path to mediasorter.py, e.g.:
 Save and enjoy automatic sorting
 
 *note: If your python is not located in the usual spot and you don't remember where you installed it, run ```where python``` in your command line*
+
+## Docker Deployment <a name="docker"></a>
+
+Prefer not to install Python, Pillow, or ffmpeg yourself? Run MediaSorter as a Docker container instead — all dependencies are baked into the image, and the container re-runs the sort job on a timer (default: hourly) so you don't need cron or Task Scheduler.
+
+**Requirements:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Mac/Windows) or Docker Engine + the Compose plugin (Linux/NAS), able to run `docker compose`.
+
+### 1. Run the interactive Docker install script
+
+**On macOS/Linux**
+
+```bash
+./docker_install/install_docker.sh
+```
+
+**On Windows**
+
+```text
+.\docker_install\install_docker.bat
+```
+
+You'll be prompted for:
+
+- **Media dump source folder** — where you drop raw photos/videos (host path, mounted as `MEDIA_SRC`)
+- **Photo destination folder** — sorted photos land here as `yyyy/mm/` (mounted as `PHOTO_DEST`)
+- **Video destination folder** — sorted videos land here as `yyyy/mm/` (mounted as `VIDEO_DEST`)
+- **Run interval in seconds** — how often the container re-scans the source folder (default `3600`)
+
+This writes a `.env` file at the project root and builds the `mediasorter:latest` image via `docker compose build`. Re-running the script reuses your previous answers as defaults.
+
+### 2. Start/stop the container
+
+On macOS/Linux, a `Makefile` wraps the common `docker compose` commands:
+
+```bash
+make up       # start the container in the background
+make logs     # follow logs
+make status   # show container status
+make down     # stop the container
+make restart  # down + up
+make clean    # stop and remove the built image
+```
+
+On Windows (or anywhere without `make`), use `docker compose` directly:
+
+```text
+docker compose up -d
+docker compose logs -f
+docker compose down
+```
+
+### How it works
+
+- The image is built from `docker_install/Dockerfile` (Python 3.11-slim + ffmpeg + Pillow/pillow-heif).
+- `docker-compose.yml` mounts your three host folders into the container at fixed internal paths, plus `./logs` for persistent log output on the host.
+- `entrypoint.sh` loops: run `mediasorter.py`, sleep `RUN_INTERVAL_SECONDS`, repeat — acting as a built-in scheduler so no external cron is required.
+- To change paths or the interval later, edit `.env` directly (or re-run the install script) and `docker compose up -d` again to pick up the change.
 
 ### For Synology DSM (what I use): 
 - Open Control Panel > Task Scheduler > Create Scheduled Task
@@ -243,7 +305,7 @@ A:
 
 **Q: How do I use this with network drives or cloud folders?**
 
-A: Yep! Just set `SOURCE_DIR`, `IMAGE_TARGET_DIR`, and `VIDEO_TARGET_DIR` to your network or cloud folder paths.
+A: Yep! Set `MEDIA_SRC`, `PHOTO_DEST`, and `VIDEO_DEST` in `.env` to your network or cloud folder paths.
 
 **Q: What file types are supported?**
 

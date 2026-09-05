@@ -1,0 +1,12 @@
+.git
+.gitignore
+.DS_Store
+data/
+tests/
+local_install/
+README.md
+changelog.md
+LICENSE
+__pycache__/
+*.pyc
+.env

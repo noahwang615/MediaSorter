@@ -1,6 +1,22 @@
 # Changelog for MediaSorter
 
-## [v1.5.0] - 2026-06-04
+## [v2.0.2]
+- Added `make_proof` service to the solution
+- Able to toggle proof service upon installation
+- Created a central install script to allow user to choose local or docker install
+- Updated repo structure
+
+## [v2.0.1]
+- Added Docker deployment support:
+    - `Dockerfile` (Python 3.11-slim + ffmpeg + Pillow/pillow-heif)
+    - `docker-compose.yml` mounting photo/video source & destination folders as volumes
+    - `entrypoint.sh` sleep-loop scheduler (`RUN_INTERVAL_SECONDS`, default hourly) \u2014 no external cron needed
+    - `Makefile` with `build`/`up`/`down`/`restart`/`logs`/`status`/`clean` targets (macOS/Linux)
+    - Interactive `install_scripts/install_docker.sh` and `install_scripts/install_docker.bat` to collect paths and generate `.env`
+    - Changed local install scripts name to `install_local` from just generic `install`.
+- `mediasorter.py` now reads `MEDIA_SRC`, `PHOTO_DEST`, `VIDEO_DEST` environment variables (falling back to the existing hardcoded defaults for non-Docker use)
+
+## [v1.5] - 2026-06-04
 - Added `Pillow-heif` dependency to requirements.txt
 - Updated the install scripts to resolve project base path
 - Added test dir for local testing before deploying to working environment

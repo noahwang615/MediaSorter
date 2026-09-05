@@ -1,0 +1,36 @@
+services:
+  mediasorter:
+    build:
+      context: .
+      dockerfile: docker_install/Dockerfile
+    image: mediasorter:latest
+    container_name: mediasorter
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MEDIA_SRC: /data/mediadump
+      PHOTO_DEST: /data/photos
+      VIDEO_DEST: /data/videos
+      RUN_INTERVAL_SECONDS: ${RUN_INTERVAL_SECONDS:-3600}
+    volumes:
+      - ${MEDIA_SRC}:/data/mediadump
+      - ${PHOTO_DEST}:/data/photos
+      - ${VIDEO_DEST}:/data/videos
+      - ./logs:/app/logs
+
+  make_proofs:
+    build:
+      context: .
+      dockerfile: docker_install/Dockerfile
+    image: mediasorter:latest
+    container_name: make_proof
+    profiles: ["proof"]
+    entrypoint: ["./proof_entrypoint.sh"]
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PHOTO_DEST: /data/photos
+      PROOF_INTERVAL_SECONDS: ${PROOF_INTERVAL_SECONDS:-86400}
+    volumes:
+      - ${PHOTO_DEST}:/data/photos
+      - ./logs:/app/logs
