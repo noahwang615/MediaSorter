@@ -15,7 +15,7 @@ pipeline {
     }
 
     stages {
-        stage('Unit + Integration Tests') {
+        stage('MediaSort Logic Tests') {
             agent {
                 docker {
                     image 'python:3.11'
@@ -28,12 +28,35 @@ pipeline {
                     . .venv/bin/activate
                     python -m pip install --upgrade pip
                     pip install -r requirements-dev.txt
-                    python -m pytest --junitxml=test-results.xml
+                    make test-mediasort
                 '''
             }
             post {
                 always {
-                    junit allowEmptyResults: true, testResults: 'test-results.xml'
+                    junit allowEmptyResults: true, testResults: 'test-results-mediasort.xml'
+                }
+            }
+        }
+
+        stage('Make Proofs Logic Tests') {
+            agent {
+                docker {
+                    image 'python:3.11'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    python -m venv .venv
+                    . .venv/bin/activate
+                    python -m pip install --upgrade pip
+                    pip install -r requirements-dev.txt
+                    make test-makeproofs
+                '''
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'test-results-makeproofs.xml'
                 }
             }
         }
@@ -54,6 +77,11 @@ pipeline {
                     docker version
                     make test-docker
                 '''
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'test-results-docker.xml'
+                }
             }
         }
     }
