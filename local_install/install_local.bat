@@ -1,6 +1,6 @@
 @echo off
+setlocal enabledelayedexpansion
 REM install_local.bat - setup script for MediaSort project on Windows
-
 SET SCRIPT_DIR=%~dp0
 SET PROJECT_BASE=%SCRIPT_DIR%..
 
