@@ -1,5 +1,11 @@
 # Changelog for MediaSorter
 
+## [v2.1]
+- Added test suite to solution.
+    - All the unit tests covers basic function test for mediasorter, make_proof, and docker smoke test logic
+- Implemented basic Jenkins Pipeline
+- No working pipeline at this version. Still WIP
+
 ## [v2.0.2]
 - Added `make_proof` service to the solution
 - Able to toggle proof service upon installation
