@@ -1,0 +1,11 @@
+#!/bin/sh
+# Repeatedly runs make_proofs.py, sleeping PROOF_INTERVAL_SECONDS between passes.
+set -e
+
+INTERVAL="${PROOF_INTERVAL_SECONDS:-86400}"
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+while true; do
+    python "$SCRIPT_DIR/scripts/make_proofs.py"
+    sleep "$INTERVAL"
+done
