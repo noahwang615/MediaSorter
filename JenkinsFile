@@ -1,0 +1,67 @@
+pipeline {
+    agent none
+
+    options {
+        timestamps()
+        disableConcurrentBuilds()
+    }
+
+    parameters {
+        booleanParam(
+            name: 'RUN_DOCKER_TESTS',
+            defaultValue: false,
+            description: 'Run Docker smoke tests (requires a Docker-capable Jenkins agent)'
+        )
+    }
+
+    stages {
+        stage('Unit + Integration Tests') {
+            agent {
+                docker {
+                    image 'python:3.11'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    python -m venv .venv
+                    . .venv/bin/activate
+                    python -m pip install --upgrade pip
+                    pip install -r requirements-dev.txt
+                    python -m pytest --junitxml=test-results.xml
+                '''
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'test-results.xml'
+                }
+            }
+        }
+
+        stage('Docker Smoke Tests') {
+            when {
+                expression { return params.RUN_DOCKER_TESTS }
+            }
+            agent {
+                label 'docker'
+            }
+            steps {
+                sh '''
+                    python3 -m venv .venv
+                    . .venv/bin/activate
+                    python -m pip install --upgrade pip
+                    pip install -r requirements-dev.txt
+                    docker version
+                    make test-docker
+                '''
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
+            cleanWs()
+        }
+    }
+}
