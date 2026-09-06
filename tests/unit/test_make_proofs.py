@@ -1,7 +1,8 @@
 from __future__ import annotations
-
 from pathlib import Path
 
+import pytest
+pytestmark = pytest.mark.makeproofs
 
 def test_iter_photo_directories_supports_raw_and_legacy_layout(make_proofs_module, monkeypatch, tmp_path: Path):
     photo_dest = tmp_path / "photos"
