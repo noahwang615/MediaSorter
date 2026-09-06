@@ -1,7 +1,7 @@
-.PHONY: help build up down restart logs clean status proof migrate migrate-apply
+.PHONY: help build up down restart logs clean status proof proof-logs
 
 help:
-	@echo "Targets: build up down restart logs clean status proof migrate migrate-apply"
+	@echo "Targets: build up down restart logs clean status proof proof-logs"
 
 build:
 	docker compose build
