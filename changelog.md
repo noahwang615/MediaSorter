@@ -12,7 +12,7 @@
     - `docker-compose.yml` mounting photo/video source & destination folders as volumes
     - `entrypoint.sh` sleep-loop scheduler (`RUN_INTERVAL_SECONDS`, default hourly) \u2014 no external cron needed
     - `Makefile` with `build`/`up`/`down`/`restart`/`logs`/`status`/`clean` targets (macOS/Linux)
-    - Interactive `install_scripts/install_docker.sh` and `install_scripts/install_docker.bat` to collect paths and generate `.env`
+    - Interactive `docker_install/install_docker.sh` and `docker_install/install_docker.bat` to collect paths and generate `.env`
     - Changed local install scripts name to `install_local` from just generic `install`.
 - `mediasorter.py` now reads `MEDIA_SRC`, `PHOTO_DEST`, `VIDEO_DEST` environment variables (falling back to the existing hardcoded defaults for non-Docker use)
 
