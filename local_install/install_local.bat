@@ -1,15 +1,15 @@
 @echo off
+setlocal enabledelayedexpansion
 REM install_local.bat - setup script for MediaSort project on Windows
-
 SET SCRIPT_DIR=%~dp0
 SET PROJECT_BASE=%SCRIPT_DIR%..
 
 echo Checking for Python installation...
 
-python --version >nul 2>&1
+python -c "import sys; raise SystemExit(0 if sys.version_info >= (3,11) else 1)" >nul 2>&1
 IF ERRORLEVEL 1 (
-    echo Python is not installed or not in PATH.
-    echo Please install Python 3.6 or newer from https://python.org/downloads/ and ensure 'python' command is available in your PATH.
+    echo Python 3.11 or newer is required and was not found in PATH.
+    echo Please install Python 3.11+ from https://python.org/downloads/ and ensure 'python' is available in your PATH.
     pause
     exit /b 1
 )

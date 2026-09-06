@@ -44,14 +44,14 @@ read -r -p "Run interval in seconds [$DEFAULT_INTERVAL]: " INTERVAL_INPUT
 INTERVAL_INPUT="${INTERVAL_INPUT:-$DEFAULT_INTERVAL}"
 
 DEFAULT_PROOF_ENABLE="n"
-if [ -f "$ENV_FILE" ] && grep -q "^COMPOSE_PROFILE=proof$" "$ENV_FILE"; then
+if [ -f "$ENV_FILE" ] && grep -q "^COMPOSE_PROFILES=proof$" "$ENV_FILE"; then
     DEFAULT_PROOF_ENABLE="y"
 fi
 read -r -p "Enable proof generation service? (y/N) (default: $DEFAULT_PROOF_ENABLE): " PROOF_ENABLE_INPUT
 PROOF_ENABLE_INPUT="${PROOF_ENABLE_INPUT:-$DEFAULT_PROOF_ENABLE}"
 
 if [ "$PROOF_ENABLE_INPUT" = "y" ] || [ "$PROOF_ENABLE_INPUT" = "Y" ]; then
-    COMPOSE_PROFILE_LINE="COMPOSE_PROFILE=proof"
+    COMPOSE_PROFILE_LINE="COMPOSE_PROFILES=proof"
     
     DEFAULT_PROOF_INTERVAL=86400
     if [ -f "$ENV_FILE" ]; then

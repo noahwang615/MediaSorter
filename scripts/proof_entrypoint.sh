@@ -1,5 +1,5 @@
 #!/bin/sh
-# Repeatedly runs mediasorter.py, sleeping PROOF_INTERVAL_SECONDS between passes.
+# Repeatedly runs make_proofs.py, sleeping PROOF_INTERVAL_SECONDS between passes.
 set -e
 
 INTERVAL="${PROOF_INTERVAL_SECONDS:-86400}"

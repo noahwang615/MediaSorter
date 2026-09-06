@@ -1,15 +1,7 @@
-.PHONY: help test test-docker build up down restart logs clean status proof migrate migrate-apply
-
-PYTHON ?= .venv/bin/python
+.PHONY: help build up down restart logs clean status proof proof-logs
 
 help:
-	@echo "Targets: test test-docker build up down restart logs clean status proof migrate migrate-apply"
-
-test:
-	$(PYTHON) -m pytest
-
-test-docker:
-	$(PYTHON) -m pytest -m docker
+	@echo "Targets: build up down restart logs clean status proof proof-logs"
 
 build:
 	docker compose build
