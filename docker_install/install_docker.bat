@@ -56,12 +56,11 @@ set /p PROOF_ENABLE=Enable proof generation service? [y/N] (default: %DEFAULT_PR
 if "!PROOF_ENABLE!"=="" set PROOF_ENABLE=!DEFAULT_PROOF_ENABLE!
 
 set COMPOSE_PROFILES=
-set PROOF_INTERVAL_SECONDS=3600
+set PROOF_INTERVAL_SECONDS=86400
 
 if /i "!PROOF_ENABLE!"=="y" (
     set COMPOSE_PROFILES=proof
-    set DEFAULT_PROOF_INTERVAL=3600
-    if exist "%ENV_FILE%" (
+    set DEFAULT_PROOF_INTERVAL=86400
         for /f "tokens=1,* delims==" %%A in ('findstr /b "PROOF_INTERVAL_SECONDS=" "%ENV_FILE%"') do set DEFAULT_PROOF_INTERVAL=%%B
     )
     set /p PROOF_INTERVAL_SECONDS=Proof interval in seconds [!DEFAULT_PROOF_INTERVAL!]:
