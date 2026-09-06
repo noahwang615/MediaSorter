@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-
+pytestmark = pytest.mark.mediasort
 
 def test_parse_exif_date_prefers_original_timestamp(mediasorter_module):
     exif_tag_lookup = {value: key for key, value in mediasorter_module.TAGS.items()}
