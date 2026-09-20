@@ -29,6 +29,8 @@ pipeline {
             post {
                 always {
                     junit allowEmptyResults: true, testResults: 'test-results-mediasort.xml'
+                    archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
+                    cleanWs()
                 }
             }
         }
@@ -47,6 +49,8 @@ pipeline {
             post {
                 always {
                     junit allowEmptyResults: true, testResults: 'test-results-makeproofs.xml'
+                    archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
+                    cleanWs()
                 }
             }
         }
@@ -71,16 +75,9 @@ pipeline {
             post {
                 always {
                     junit allowEmptyResults: true, testResults: 'test-results-docker.xml'
+                    archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
+                    cleanWs()
                 }
-            }
-        }
-    }
-
-    post {
-        always {
-            node('') {
-                archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
-                cleanWs()
             }
         }
     }
