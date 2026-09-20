@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     options {
         timestamps()
@@ -78,8 +78,10 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
-            cleanWs()
+            node('') {
+                archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
+                cleanWs()
+            }
         }
     }
 }
