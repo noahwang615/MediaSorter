@@ -1,6 +1,7 @@
 pipeline {
-    agent any
-
+    agent {
+        label 'python-runner'
+    }
     options {
         timestamps()
         disableConcurrentBuilds()
@@ -16,14 +17,10 @@ pipeline {
 
     stages {
         stage('MediaSort Logic Tests') {
-            agent {
-                docker {
-                    image 'python:3.11-slim'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             steps {
                 sh '''
+                    python3 -m venv .venv
+                    . .venv/bin/activate
                     python -m pip install --upgrade pip
                     pip install -r requirements-dev.txt
                     make test-mediasort
@@ -39,14 +36,10 @@ pipeline {
         }
 
         stage('Make Proofs Logic Tests') {
-            agent {
-                docker {
-                    image 'python:3.11-slim'
-                    args '-v /var/run/docker.sock:/var/run/docker.sock'
-                }
-            }
             steps {
                 sh '''
+                    python3 -m venv .venv
+                    . .venv/bin/activate
                     python -m pip install --upgrade pip
                     pip install -r requirements-dev.txt
                     make test-makeproofs
@@ -64,9 +57,6 @@ pipeline {
         stage('Docker Smoke Tests') {
             when {
                 expression { return params.RUN_DOCKER_TESTS }
-            }
-            agent {
-                label 'docker'
             }
             steps {
                 sh '''
