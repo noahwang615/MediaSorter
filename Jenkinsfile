@@ -1,7 +1,9 @@
 pipeline {
+
     agent {
         label 'python-runner'
     }
+    
     options {
         timestamps()
         disableConcurrentBuilds()
@@ -30,7 +32,6 @@ pipeline {
                 always {
                     junit allowEmptyResults: true, testResults: 'test-results-mediasort.xml'
                     archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
-                    cleanWs()
                 }
             }
         }
@@ -49,7 +50,6 @@ pipeline {
                 always {
                     junit allowEmptyResults: true, testResults: 'test-results-makeproofs.xml'
                     archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
-                    cleanWs()
                 }
             }
         }
@@ -72,9 +72,15 @@ pipeline {
                 always {
                     junit allowEmptyResults: true, testResults: 'test-results-docker.xml'
                     archiveArtifacts artifacts: 'logs/**/*.log', allowEmptyArchive: true
-                    cleanWs()
                 }
             }
+        }
+    }
+
+    // Clean workspace after all stages have completed
+    post {
+        always {
+            cleanWs()
         }
     }
 }
