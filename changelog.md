@@ -1,10 +1,16 @@
 # Changelog for MediaSorter
 
 ## [v2.1]
-- Added test suite to solution.
-    - All the unit tests covers basic function test for mediasorter, make_proof, and docker smoke test logic
-- Implemented basic Jenkins Pipeline
+- Added unit and integration test suite (covering `mediasorter`, `make_proof`, and Docker smoke tests).
+- Implemented Jenkins CI Pipeline for automated test execution, JUnit reporting, and log artifact archiving.
+- [WIP] Automated Docker build & push (CD process for `:latest` container tag).
 - No working pipeline at this version. Still WIP
+
+## [v2.0.3]
+- Added manual trigger process for Docker deployments:
+    - Added `make sort` target to `Makefile` for macOS and Linux users.
+    - Created `manual_trigger/` directory containing batch scripts (`manual_sort_trigger.bat`, `manual_proof_trigger.bat`) and shell scripts (`manual_sort_trigger.sh`, `manual_proof_trigger.sh`).
+    - Updated `README.md` with instructions for manually triggering sort and proof passes on demand.
 
 ## [v2.0.2]
 - Added `make_proof` service to the solution
