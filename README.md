@@ -15,15 +15,14 @@ MediaSorter moves files instead of copying them. Keep backups of your media befo
 
 ## Requirements
 
-For a local installation:
+**For Docker:**
 
+- Docker Engine and the Compose plugin, or Docker Desktop
+
+**For a local installation:**
 - Python 3.11 or newer
 - FFmpeg, including the `ffprobe` command
 - Git, if cloning the repository
-
-For Docker:
-
-- Docker Engine and the Compose plugin, or Docker Desktop
 
 The local installer installs the Python packages from `scripts/requirements.txt` (`Pillow`, `pillow-heif`, and `python-dotenv`). The Docker image includes Python, FFmpeg, and those packages.
 
@@ -42,7 +41,7 @@ You can also download the repository as a ZIP file and open a terminal in the ex
 
 ### 2. Choose an installation mode
 
-#### Local Python installation
+### Docker installation
 
 On macOS or Linux:
 
@@ -50,25 +49,7 @@ On macOS or Linux:
 ./install.sh
 ```
 
-Choose `1` when prompted. The local installer:
-
-1. Checks for Python 3.11 or newer.
-2. Upgrades `pip` and installs `scripts/requirements.txt`.
-3. Checks that `ffprobe` is available.
-4. Prompts for the source, photo destination, and video destination folders.
-5. Creates those folders and writes the settings to `.env`.
-
-On Windows, run `install.bat` and choose the local installation option. Python must be available as `python`, and `ffprobe` must be available in `PATH`.
-
-#### Docker installation
-
-On macOS or Linux:
-
-```bash
-./install.sh
-```
-
-Choose `2` when prompted. You can also run the Docker installer directly:
+Choose `1` when prompted. You can also run the Docker installer directly:
 
 ```bash
 ./docker_install/install_docker.sh
@@ -86,30 +67,78 @@ The Docker installer prompts for:
 
 It creates the selected folders, writes `.env`, and builds the `mediasorter:latest` image. Docker must be running before the installer builds the image.
 
-## Configuration
+### Running with Docker
 
-Both installation modes use a `.env` file in the project root. A local run loads this file directly. Docker Compose uses it to bind host folders into the container.
+The Docker entrypoint runs one sorting pass, waits for `RUN_INTERVAL_SECONDS` (default `3600`), and repeats. No external scheduler is required.
 
-Example:
+Using Make on macOS/Linux:
 
-```dotenv
-MEDIA_SRC=/path/to/mediadump
-PHOTO_DEST=/path/to/photos
-VIDEO_DEST=/path/to/videos
-RUN_INTERVAL_SECONDS=3600
+```bash
+make up       # start in the background
+make status   # show container status
+make sort     # manually trigger a sort pass immediately
+make logs     # follow logs
+make restart  # restart after configuration changes
+make down     # stop the container
+make clean    # stop and remove the built image
 ```
 
-The default local paths, when these variables are not set, are:
+Without Make, use Docker Compose directly:
 
-```text
-data/mediadump
-data/photos
-data/videos
+```bash
+docker compose up -d
+docker compose ps
+docker compose logs -f
+docker compose down
 ```
 
-Relative paths are resolved from the project root. `MEDIA_SRC`, `PHOTO_DEST`, and `VIDEO_DEST` should be host paths when running Docker. Do not commit `.env` if it contains private paths or other machine-specific settings.
+### Manual triggers (Docker)
 
-## Running locally
+To run an immediate sorting or proofing pass on demand without waiting for the scheduled loop interval:
+
+- **macOS / Linux (using Make):**
+  ```bash
+  make sort     # trigger media sorting pass
+  make proof    # trigger proof image generation pass
+  ```
+- **Windows (Command Prompt / PowerShell):**
+  Run the batch scripts located in the `manual_trigger/` folder:
+  ```cmd
+  manual_trigger\manual_sort_trigger.bat
+  manual_trigger\manual_proof_trigger.bat
+  ```
+- **Direct Docker Compose command:**
+  ```bash
+  docker compose exec mediasorter python scripts/mediasorter.py
+  ```
+
+After changing `.env`, restart the stack so Compose reloads the values:
+
+```bash
+docker compose up -d
+```
+
+The container writes persistent logs to `logs/` in the project. The source and destination folders remain on the host and are mounted into the container.
+
+### Local Python installation
+
+On macOS or Linux:
+
+```bash
+./install.sh
+```
+
+Choose `2` when prompted. The local installer:
+
+1. Checks for Python 3.11 or newer.
+2. Upgrades `pip` and installs `scripts/requirements.txt`.
+3. Checks that `ffprobe` is available.
+4. Prompts for the source, photo destination, and video destination folders.
+5. Creates those folders and writes the settings to `.env`.
+
+On Windows, run `install.bat` and choose the local installation option. Python must be available as `python`, and `ffprobe` must be available in `PATH`.
+
+### Running locally
 
 After local installation, run one sorting pass from the project root:
 
@@ -133,37 +162,28 @@ Example cron entry that runs hourly:
 0 * * * * /usr/bin/python3 /path/to/MediaSorter/scripts/mediasorter.py
 ```
 
-## Running with Docker
+## Configuration
 
-The Docker entrypoint runs one sorting pass, waits for `RUN_INTERVAL_SECONDS` (default `3600`), and repeats. No external scheduler is required.
+Both installation modes use a `.env` file in the project root. A local run loads this file directly. Docker Compose uses it to bind host folders into the container.
 
-Using Make on macOS/Linux:
+Example:
 
-```bash
-make up       # start in the background
-make status   # show container status
-make logs     # follow logs
-make restart  # restart after configuration changes
-make down     # stop the container
-make clean    # stop and remove the built image
+```dotenv
+MEDIA_SRC=/path/to/mediadump
+PHOTO_DEST=/path/to/photos
+VIDEO_DEST=/path/to/videos
+RUN_INTERVAL_SECONDS=3600
 ```
 
-Without Make, use Docker Compose directly:
+The default local paths, when these variables are not set, are:
 
-```bash
-docker compose up -d
-docker compose ps
-docker compose logs -f
-docker compose down
+```text
+data/mediadump
+data/photos
+data/videos
 ```
 
-After changing `.env`, restart the stack so Compose reloads the values:
-
-```bash
-docker compose up -d
-```
-
-The container writes persistent logs to `logs/` in the project. The source and destination folders remain on the host and are mounted into the container.
+Relative paths are resolved from the project root. `MEDIA_SRC`, `PHOTO_DEST`, and `VIDEO_DEST` should be host paths when running Docker. Do not commit `.env` if it contains private paths or other machine-specific settings.
 
 ## Proof images
 
@@ -199,8 +219,8 @@ mediadump/
 MediaSorter produces paths like:
 
 ```text
-photos/2022/02/IMG_1234.HEIC
-photos/2024/08/baby.png
+photos/2022/02/raw/IMG_1234.HEIC
+photos/2024/08/raw/baby.png
 videos/2024/07/IMG_2345.mov
 videos/2023/12/birthday.mp4
 ```
