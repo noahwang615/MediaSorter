@@ -1,9 +1,9 @@
-.PHONY: help build up down restart logs clean status proof proof-logs
+.PHONY: help build up down restart logs clean status sort proof proof-logs
 
 PYTHON ?= .venv/bin/python
 
 help:
-	@echo "Targets: build up down restart logs clean status proof proof-logs"
+	@echo "Targets: build up down restart logs clean status sort proof proof-logs"
 
 build:
 	docker compose build
@@ -21,6 +21,9 @@ logs:
 
 status:
 	docker compose ps
+
+sort:
+	docker compose exec mediasorter python scripts/mediasorter.py
 
 proof:
 	docker compose run --rm --build --entrypoint python mediasorter scripts/make_proofs.py
